@@ -213,7 +213,17 @@ However we do need to filter the La Quinta dataset for locations in United State
 
 ```{r}
 laquinta <- laquinta %>%
-  filter(country == "United States")
+  mutate(country = case_when(
+    state %in% state.abb     ~ "United States",
+    state %in% c("ON", "BC") ~ "Canada",
+    state == "ANT"           ~ "Colombia",
+    state %in% c("FM", "NL", "PU", "SL", "VE", "AG", "QR", "CH") ~ "Mexico",
+    TRUE                     ~ "Unknown"  # catch any we might have missed
+  ))
+
+# Check the country distribution
+laquinta %>%
+  count(country)
 ```
 
 9.  Which states have the most and fewest Denny's locations? What about La Quinta? Is this surprising? Why or why not?
