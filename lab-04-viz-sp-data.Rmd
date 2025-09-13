@@ -245,6 +245,20 @@ dennys %>%
 Before you move on the the next question, run the code above and take a look at the output.
 In the next exercise you will need to build on this pipe.
 
+```{r dennys-by-state}
+# Denny's locations by state
+dennys_by_state <- dennys %>%
+  count(state, sort = TRUE)
+
+# Top 5 states with most Denny's
+cat("Top 5 states with most Denny's:\n")
+head(dennys_by_state, 5)
+
+# Bottom 5 states with fewest Denny's
+cat("\nStates with fewest Denny's:\n")
+tail(dennys_by_state, 5)
+```
+
 10. Which states have the most Denny's locations per thousand square miles? What about La Quinta?
 
 Next, we put the two datasets together into a single data frame.
