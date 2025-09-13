@@ -313,6 +313,21 @@ These should follow best practices you learned in class, such as informative tit
 See <http://ggplot2.tidyverse.org/reference/labs.html> for help with the syntax.
 You can also choose different themes to change the overall look of your plots, see <http://ggplot2.tidyverse.org/reference/ggtheme.html> for help with these.
 
+
+```{r dennys-per-area}
+# Denny's per thousand square miles
+dennys_per_area <- dennys %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
+  mutate(locations_per_1000sqmi = n / (area / 1000)) %>%
+  arrange(desc(locations_per_1000sqmi))
+
+# Top 5 states by Denny's density
+cat("Top 5 states by Denny's per 1000 square miles:\n")
+head(dennys_per_area %>% select(state, n, area, locations_per_1000sqmi), 5)
+```
+
+
 11. Filter the data for observations in North Carolina only, and recreate the plot.
     You should also adjust the transparency of the points, by setting the `alpha` level, so that it's easier to see the overplotted ones.
     Visually, does Mitch Hedberg's joke appear to hold here?
