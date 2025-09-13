@@ -367,6 +367,24 @@ Looking at the North Carolina plot, there does appear to be some clustering of D
 12. Now filter the data for observations in Texas only, and recreate the plot, with an appropriate `alpha` level.
     Visually, does Mitch Hedberg's joke appear to hold here?
 
+```{r tx-plot}
+dn_lq %>%
+  filter(state == "TX") %>%
+  ggplot(mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha = 0.5, size = 1.5) +
+  labs(
+    title = "Denny's and La Quinta Locations in Texas",
+    x = "Longitude", 
+    y = "Latitude",
+    color = "Establishment"
+  ) +
+  theme_minimal() +
+  coord_map() +
+  scale_color_manual(values = c("Denny's" = "#FF6B6B", "La Quinta" = "#4ECDC4"))
+```
+
+In Texas, with many more locations of both establishments, we can see some clustering patterns, especially in major metropolitan areas like Houston, Dallas, Austin, and San Antonio. There does appear to be some tendency for the two chains to locate near each other, particularly along major highways. However, there are also many locations of each chain that are not near the other. The joke seems to have some basis in reality but is an exaggeration.
+
 That's it for now!
 In the next lab we will take a more quantitative approach to answering these questions.
 
