@@ -23,7 +23,7 @@ link-citations: true
 ---
 
 ```{r include = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+knitr::opts_chunk$set(eval = TRUE)
 ```
 
 ```{r fig.margin = TRUE, echo = FALSE}
@@ -73,6 +73,7 @@ You can load them by running the following in your Console:
 ```{r message = FALSE}
 library(tidyverse) 
 library(dsbox) 
+library(mapproj) 
 ```
 
 ## Data
@@ -319,7 +320,7 @@ You can also choose different themes to change the overall look of your plots, s
 # Denny's per thousand square miles
 dennys_per_area <- dennys %>%
   count(state) %>%
-  inner_join(states, by = c("state" = "abbreviation")) %>%
+  inner_join(states, by = c "state" = "abbreviation") %>%
   mutate(locations_per_1000sqmi = n / (area / 1000)) %>%
   arrange(desc(locations_per_1000sqmi))
 
@@ -333,7 +334,7 @@ head(dennys_per_area %>% select(state, n, area, locations_per_1000sqmi), 5)
 laquinta_per_area <- laquinta %>%
   filter(country == "United States") %>%
   count(state) %>%
-  inner_join(states, by = c("state" = "abbreviation")) %>%
+  inner_join(states, by = c "state" = "abbreviation") %>%
   mutate(locations_per_1000sqmi = n / (area / 1000)) %>%
   arrange(desc(locations_per_1000sqmi))
 
@@ -360,7 +361,7 @@ dn_lq %>%
     color = "Establishment"
   ) +
   theme_minimal() +
-  coord_map()  # This preserves the aspect ratio for geographic data
+  coord_quickmap()  # Alternative that doesn't require mapproj
 ```
 
 Looking at the North Carolina plot, there does appear to be some clustering of Denny's and La Quinta locations, particularly around major cities and along interstate corridors. However, the pattern isn't overwhelming - there are many Denny's without nearby La Quintas and vice versa. The joke partially holds but isn't a universal truth.
@@ -380,7 +381,7 @@ dn_lq %>%
     color = "Establishment"
   ) +
   theme_minimal() +
-  coord_map() +
+  coord_quickmap() +  # Alternative that doesn't require mapproj
   scale_color_manual(values = c("Denny's" = "#FF6B6B", "La Quinta" = "#4ECDC4"))
 ```
 
@@ -391,4 +392,4 @@ In the next lab we will take a more quantitative approach to answering these que
 
 🧶 ✅ ⬆️ Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards and review the md document on GitHub to make sure you're happy with the final state of your work.*
 
-Now go back through your write up to make sure you've answered all questions and all of your R chunks are properly labeled. Once you decide that you are done with the lab, choose the knit drop down and select `Knit to tufte_handout` to generate a pdf. Download and submit that pdf to Canvas. 
+Now go back through your write up to make sure you've answered all questions and all of your R chunks are properly labeled. Once you decide that you are done with the lab, choose the knit drop down and select `Knit to tufte_handout` to generate a pdf. Download and submit that pdf to Canvas.
