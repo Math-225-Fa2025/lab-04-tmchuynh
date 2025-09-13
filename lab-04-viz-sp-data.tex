@@ -102,7 +102,7 @@
 \urlstyle{same}
 \hypersetup{
   pdftitle={Lab 04 - La Quinta is Spanish for next to Denny's, Pt. 1},
-  pdfauthor={Your Name},
+  pdfauthor={Tina Huynh},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
@@ -114,7 +114,7 @@
 }
 \makeatother
 \subtitle{Visualizing spatial data}
-\author{Your Name}
+\author{Tina Huynh}
 \date{}
 
 \begin{document}
@@ -124,6 +124,8 @@
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
+\pandocbounded{\includegraphics[keepaspectratio]{img/mitch-hedgeberg-lqd.jpg}}
+
 Have you ever taken a road trip in the US and thought to yourself ``I
 wonder what La Quinta means''. Well, the late comedian
 \href{https://en.wikipedia.org/wiki/Mitch_Hedberg}{Mitch Hedberg} thinks
@@ -195,6 +197,7 @@ running the following in your Console:
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(tidyverse) }
 \FunctionTok{library}\NormalTok{(dsbox) }
+\FunctionTok{library}\NormalTok{(mapproj) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -226,6 +229,17 @@ is located in your repository's \texttt{data} folder.
 \end{Highlighting}
 \end{Shaded}
 
+\begin{verbatim}
+## Rows: 51 Columns: 3
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (2): name, abbreviation
+## dbl (1): area
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
 Each observation in this dataset represents a state, including DC. Along
 with the name of the state we have the two-letter abbreviation and we
 have the geographic area of the state (in square miles).
@@ -234,15 +248,72 @@ have the geographic area of the state (in square miles).
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\tightlist
 \item
   What are the dimensions of the Denny's dataset? (Hint: Use inline R
   code and functions like \texttt{nrow} and \texttt{ncol} to compose
   your answer.) What does each row in the dataset represent? What are
   the variables?
+\end{enumerate}
+
+The Denny's dataset has 1643 rows and 8 columns. Each row represents a
+single Denny's restaurant location. The variables include location
+information such as address, city, state, zip code, longitude, and
+latitude.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Let\textquotesingle{}s examine the structure of the data}
+\FunctionTok{glimpse}\NormalTok{(dennys)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 1,643
+## Columns: 8
+## $ address       <chr> "2900 Denali", "3850 Debarr Road", "1929 Airport Way", "~
+## $ city          <chr> "Anchorage", "Anchorage", "Fairbanks", "Auburn", "Birmin~
+## $ state         <chr> "AK", "AK", "AK", "AL", "AL", "AL", "AL", "AL", "AL", "A~
+## $ zip           <chr> "99503", "99508", "99701", "36849", "35207", "35294", "3~
+## $ longitude     <dbl> -149.8767, -149.8090, -147.7600, -85.4681, -86.8317, -86~
+## $ latitude      <dbl> 61.1953, 61.2097, 64.8366, 32.6033, 33.5615, 33.5007, 34~
+## $ country       <chr> "United States", "United States", "United States", "Unit~
+## $ establishment <chr> "Denny's", "Denny's", "Denny's", "Denny's", "Denny's", "~
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
 \item
   What are the dimensions of the La Quinta's dataset? What does each row
   in the dataset represent? What are the variables?
 \end{enumerate}
+
+The La Quinta dataset has 909 rows and 8 columns. Each row represents a
+single La Quinta hotel location. The variables are similar to the
+Denny's dataset, including address, city, state, zip code, longitude,
+and latitude.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Examine the structure of La Quinta data}
+\FunctionTok{glimpse}\NormalTok{(laquinta)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 909
+## Columns: 8
+## $ address       <chr> "793 W. Bel Air Avenue", "3018 CatClaw Dr", "3501 West L~
+## $ city          <chr> "\nAberdeen", "\nAbilene", "\nAbilene", "\nAcworth", "\n~
+## $ state         <chr> "MD", "TX", "TX", "GA", "OK", "TX", "AG", "TX", "NM", "N~
+## $ zip           <chr> "21001", "79606", "79601", "30102", "74820", "75254", "2~
+## $ longitude     <dbl> -76.18846, -99.77877, -99.72269, -84.65609, -96.63652, -~
+## $ latitude      <dbl> 39.52322, 32.41349, 32.49136, 34.08204, 34.78180, 32.951~
+## $ country       <chr> "United States", "United States", "United States", "Unit~
+## $ establishment <chr> "La Quinta", "La Quinta", "La Quinta", "La Quinta", "La ~
+\end{verbatim}
 
 🧶 ✅ ⬆️ Knit, \emph{commit, and push your changes to GitHub with an
 appropriate commit message. Make sure to commit and push all changed
@@ -254,10 +325,22 @@ in the United States.
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{2}
+\tightlist
 \item
   Take a look at the websites that the data come from (linked above).
   Are there any La Quinta's locations outside of the US? If so, which
   countries? What about Denny's?
+\end{enumerate}
+
+Based on examining the websites: - La Quinta has locations outside the
+US, including in Canada, Mexico, Colombia, and other countries. -
+Denny's appears to have locations primarily in the US, with some
+international locations in countries like Canada, Mexico, and others.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
 \item
   Now take a look at the data. What would be some ways of determining
   whether or not either establishment has any locations outside the US
@@ -266,6 +349,13 @@ in the United States.
   at least one as your answer, but you're welcomed to write down a few
   options too.
 \end{enumerate}
+
+Several ways to determine if there are non-US locations: 1. Check if the
+\texttt{state} variable contains any non-US state abbreviations
+(anything not in the standard 50 states + DC) 2. Look for zip codes that
+don't follow US formatting patterns 3. Check if longitude/latitude
+coordinates fall outside US boundaries 4. Look for any unusual patterns
+in the address fields that might indicate foreign addresses
 
 We will determine whether or not the establishment has a location
 outside the US using the \texttt{state} variable in the \texttt{dennys}
@@ -287,17 +377,21 @@ loaded.
   \textbf{not}. Are there any Denny's locations outside the US?
 \end{enumerate}
 
-\begin{marginfigure}
-``Filter for \texttt{state}s that are not in
-\texttt{states\$abbreviation}.''
-\end{marginfigure}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{dennys }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{(state }\SpecialCharTok{\%in\%}\NormalTok{ states}\SpecialCharTok{$}\NormalTok{abbreviation))}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 0 x 8
+## # i 8 variables: address <chr>, city <chr>, state <chr>, zip <chr>,
+## #   longitude <dbl>, latitude <dbl>, country <chr>, establishment <chr>
+\end{verbatim}
+
+No, there are no Denny's locations outside the US in this dataset. All
+Denny's locations have state abbreviations that match US states.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -311,26 +405,77 @@ loaded.
   contains the new variable going forward.
 \end{enumerate}
 
-\begin{marginfigure}
-We don't need to tell R how many times to repeat the character string
-``United States'' to fill in the data for all observations, R takes care
-of that automatically.
-\end{marginfigure}
-
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{dennys }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{dennys }\OtherTok{\textless{}{-}}\NormalTok{ dennys }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{country =} \StringTok{"United States"}\NormalTok{)}
+
+\CommentTok{\# Verify the new variable was added}
+\FunctionTok{glimpse}\NormalTok{(dennys)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## Rows: 1,643
+## Columns: 8
+## $ address       <chr> "2900 Denali", "3850 Debarr Road", "1929 Airport Way", "~
+## $ city          <chr> "Anchorage", "Anchorage", "Fairbanks", "Auburn", "Birmin~
+## $ state         <chr> "AK", "AK", "AK", "AL", "AL", "AL", "AL", "AL", "AL", "A~
+## $ zip           <chr> "99503", "99508", "99701", "36849", "35207", "35294", "3~
+## $ longitude     <dbl> -149.8767, -149.8090, -147.7600, -85.4681, -86.8317, -86~
+## $ latitude      <dbl> 61.1953, 61.2097, 64.8366, 32.6033, 33.5615, 33.5007, 34~
+## $ country       <chr> "United States", "United States", "United States", "Unit~
+## $ establishment <chr> "Denny's", "Denny's", "Denny's", "Denny's", "Denny's", "~
+\end{verbatim}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{6}
+\tightlist
 \item
   Find the La Quinta locations that are outside the US, and figure out
   which country they are in. This might require some googling. Take
   notes, you will need to use this information in the next exercise.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{laquinta }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{(state }\SpecialCharTok{\%in\%}\NormalTok{ states}\SpecialCharTok{$}\NormalTok{abbreviation))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 14 x 8
+##    address            city  state zip   longitude latitude country establishment
+##    <chr>              <chr> <chr> <chr>     <dbl>    <dbl> <chr>   <chr>        
+##  1 Carretera Panamer~ "\nA~ AG    20345    -102.     21.8  Mexico  La Quinta    
+##  2 Av. Tulum Mza. 14~ "\nC~ QR    77500     -86.8    21.2  Mexico  La Quinta    
+##  3 Ejercito Nacional~ "Col~ CH    32528    -106.     31.7  Mexico  La Quinta    
+##  4 Blvd. Aeropuerto ~ "Par~ NL    66600    -100.     25.8  Mexico  La Quinta    
+##  5 Carrera 38 # 26-1~ "\nM~ ANT   0500~     -75.6     6.22 Colomb~ La Quinta    
+##  6 AV. PINO SUAREZ N~ "Col~ NL    64000    -100.     25.7  Mexico  La Quinta    
+##  7 Av. Fidel Velazqu~ "\nM~ NL    64190    -100.     25.7  Mexico  La Quinta    
+##  8 63 King Street Ea~ "\nO~ ON    L1H1~     -78.9    43.9  Canada  La Quinta    
+##  9 Calle Las Torres-~ "\nP~ VE    93210     -97.4    20.6  Mexico  La Quinta    
+## 10 Blvd. Audi N. 3 C~ "\nS~ PU    75010     -97.8    19.2  Mexico  La Quinta    
+## 11 Ave. Zeta del Coc~ "Col~ PU    72810     -98.2    19.0  Mexico  La Quinta    
+## 12 Av. Benito Juarez~ "\nS~ SL    78399    -101.     22.1  Mexico  La Quinta    
+## 13 Blvd. Fuerza Arma~ "con~ FM    11101     -87.2    14.1  Mexico  La Quinta    
+## 14 8640 Alexandra Rd  "\nR~ BC    V6X1~    -123.     49.2  Canada  La Quinta
+\end{verbatim}
+
+Based on the output and some research: - ON = Ontario, Canada - BC =
+British Columbia, Canada\\
+- ANT = Antioquia, Colombia - FM = Mexico (possibly Estado de México) -
+NL = Nuevo León, Mexico - PU = Puebla, Mexico - SL = San Luis Potosí,
+Mexico - VE = Veracruz, Mexico - AG = Aguascalientes, Mexico - QR =
+Quintana Roo, Mexico - CH = Chihuahua, Mexico
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{7}
+\tightlist
 \item
   Add a country variable to the La Quinta dataset. Use the
   \texttt{case\_when} function to populate this variable. You'll need to
@@ -340,15 +485,30 @@ of that automatically.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{laquinta }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{laquinta }\OtherTok{\textless{}{-}}\NormalTok{ laquinta }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{mutate}\NormalTok{(}\AttributeTok{country =} \FunctionTok{case\_when}\NormalTok{(}
 \NormalTok{    state }\SpecialCharTok{\%in\%}\NormalTok{ state.abb     }\SpecialCharTok{\textasciitilde{}} \StringTok{"United States"}\NormalTok{,}
 \NormalTok{    state }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"ON"}\NormalTok{, }\StringTok{"BC"}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"Canada"}\NormalTok{,}
 \NormalTok{    state }\SpecialCharTok{==} \StringTok{"ANT"}           \SpecialCharTok{\textasciitilde{}} \StringTok{"Colombia"}\NormalTok{,}
-\NormalTok{    ...                      }\CommentTok{\# fill in the rest}
+\NormalTok{    state }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"FM"}\NormalTok{, }\StringTok{"NL"}\NormalTok{, }\StringTok{"PU"}\NormalTok{, }\StringTok{"SL"}\NormalTok{, }\StringTok{"VE"}\NormalTok{, }\StringTok{"AG"}\NormalTok{, }\StringTok{"QR"}\NormalTok{, }\StringTok{"CH"}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"Mexico"}\NormalTok{,}
+    \ConstantTok{TRUE}                     \SpecialCharTok{\textasciitilde{}} \StringTok{"Unknown"}  \CommentTok{\# catch any we might have missed}
 \NormalTok{  ))}
+
+\CommentTok{\# Check the country distribution}
+\NormalTok{laquinta }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(country)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 2
+##   country           n
+##   <chr>         <int>
+## 1 Canada            2
+## 2 Colombia          1
+## 3 Mexico           11
+## 4 United States   895
+\end{verbatim}
 
 🧶 ✅ ⬆️ Knit, \emph{commit, and push your changes to GitHub with an
 appropriate commit message. Make sure to commit and push all changed
@@ -362,9 +522,29 @@ locations in United States.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{laquinta }\OtherTok{\textless{}{-}}\NormalTok{ laquinta }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{filter}\NormalTok{(country }\SpecialCharTok{==} \StringTok{"United States"}\NormalTok{)}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{country =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{    state }\SpecialCharTok{\%in\%}\NormalTok{ state.abb     }\SpecialCharTok{\textasciitilde{}} \StringTok{"United States"}\NormalTok{,}
+\NormalTok{    state }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"ON"}\NormalTok{, }\StringTok{"BC"}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"Canada"}\NormalTok{,}
+\NormalTok{    state }\SpecialCharTok{==} \StringTok{"ANT"}           \SpecialCharTok{\textasciitilde{}} \StringTok{"Colombia"}\NormalTok{,}
+\NormalTok{    state }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"FM"}\NormalTok{, }\StringTok{"NL"}\NormalTok{, }\StringTok{"PU"}\NormalTok{, }\StringTok{"SL"}\NormalTok{, }\StringTok{"VE"}\NormalTok{, }\StringTok{"AG"}\NormalTok{, }\StringTok{"QR"}\NormalTok{, }\StringTok{"CH"}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"Mexico"}\NormalTok{,}
+    \ConstantTok{TRUE}                     \SpecialCharTok{\textasciitilde{}} \StringTok{"Unknown"}  \CommentTok{\# catch any we might have missed}
+\NormalTok{  ))}
+
+\CommentTok{\# Check the country distribution}
+\NormalTok{laquinta }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(country)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 2
+##   country           n
+##   <chr>         <int>
+## 1 Canada            2
+## 2 Colombia          1
+## 3 Mexico           11
+## 4 United States   895
+\end{verbatim}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -397,9 +577,155 @@ from the Denny's data should be matched \texttt{by} the
 \end{Highlighting}
 \end{Shaded}
 
+\begin{verbatim}
+## # A tibble: 51 x 4
+##    state     n name                     area
+##    <chr> <int> <chr>                   <dbl>
+##  1 AK        3 Alaska               665384. 
+##  2 AL        7 Alabama               52420. 
+##  3 AR        9 Arkansas              53179. 
+##  4 AZ       83 Arizona              113990. 
+##  5 CA      403 California           163695. 
+##  6 CO       29 Colorado             104094. 
+##  7 CT       12 Connecticut            5543. 
+##  8 DC        2 District of Columbia     68.3
+##  9 DE        1 Delaware               2489. 
+## 10 FL      140 Florida               65758. 
+## # i 41 more rows
+\end{verbatim}
+
 Before you move on the the next question, run the code above and take a
 look at the output. In the next exercise you will need to build on this
 pipe.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Denny\textquotesingle{}s locations by state}
+\NormalTok{dennys\_by\_state }\OtherTok{\textless{}{-}}\NormalTok{ dennys }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(state, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Top 5 states with most Denny\textquotesingle{}s}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Top 5 states with most Denny\textquotesingle{}s:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Top 5 states with most Denny's:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(dennys\_by\_state, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 x 2
+##   state     n
+##   <chr> <int>
+## 1 CA      403
+## 2 TX      200
+## 3 FL      140
+## 4 AZ       83
+## 5 IL       56
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Bottom 5 states with fewest Denny\textquotesingle{}s}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{States with fewest Denny\textquotesingle{}s:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## States with fewest Denny's:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tail}\NormalTok{(dennys\_by\_state, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 x 2
+##   state     n
+##   <chr> <int>
+## 1 SD        3
+## 2 WV        3
+## 3 DC        2
+## 4 VT        2
+## 5 DE        1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# La Quinta locations by state (US only)}
+\NormalTok{laquinta\_by\_state }\OtherTok{\textless{}{-}}\NormalTok{ laquinta }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(country }\SpecialCharTok{==} \StringTok{"United States"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(state, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Top 5 states with most La Quinta}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Top 5 states with most La Quinta:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Top 5 states with most La Quinta:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(laquinta\_by\_state, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 x 2
+##   state     n
+##   <chr> <int>
+## 1 TX      237
+## 2 FL       74
+## 3 CA       56
+## 4 GA       41
+## 5 TN       30
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Bottom 5 states with fewest La Quinta}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{States with fewest La Quinta:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## States with fewest La Quinta:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tail}\NormalTok{(laquinta\_by\_state, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 x 2
+##   state     n
+##   <chr> <int>
+## 1 NH        2
+## 2 RI        2
+## 3 SD        2
+## 4 VT        2
+## 5 ME        1
+\end{verbatim}
+
+This is not surprising because: - Both chains have many locations in
+California and Texas, which are large states with high populations -
+States like Delaware and Vermont have few locations, which makes sense
+given their smaller size and population - The distribution reflects
+population density and tourism patterns
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -440,10 +766,14 @@ latitude is plotted on the x-axis and the longitude on the y-axis.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{ggplot}\NormalTok{(dn\_lq, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ longitude, }\AttributeTok{y =}\NormalTok{ latitude, }\AttributeTok{color =}\NormalTok{ establishment)) }\SpecialCharTok{+}
+\FunctionTok{ggplot}\NormalTok{(dn\_lq, }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ longitude,}
+                            \AttributeTok{y =}\NormalTok{ latitude,}
+                            \AttributeTok{color =}\NormalTok{ establishment)) }\SpecialCharTok{+}
   \FunctionTok{geom\_point}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{lab-04-viz-sp-data_files/figure-latex/unnamed-chunk-9-1.pdf}}
 
 The following two questions ask you to create visualizations. These
 should follow best practices you learned in class, such as informative
@@ -454,20 +784,154 @@ of your plots, see
 \url{http://ggplot2.tidyverse.org/reference/ggtheme.html} for help with
 these.
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Denny\textquotesingle{}s per thousand square miles}
+\NormalTok{dennys\_per\_area }\OtherTok{\textless{}{-}}\NormalTok{ dennys }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(state) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{inner\_join}\NormalTok{(states, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"state"} \OtherTok{=} \StringTok{"abbreviation"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{locations\_per\_1000sqmi =}\NormalTok{ n }\SpecialCharTok{/}\NormalTok{ (area }\SpecialCharTok{/} \DecValTok{1000}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(locations\_per\_1000sqmi))}
+
+\CommentTok{\# Top 5 states by Denny\textquotesingle{}s density}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Top 5 states by Denny\textquotesingle{}s per 1000 square miles:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Top 5 states by Denny's per 1000 square miles:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(dennys\_per\_area }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(state, n, area, locations\_per\_1000sqmi), }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 x 4
+##   state     n     area locations_per_1000sqmi
+##   <chr> <int>    <dbl>                  <dbl>
+## 1 DC        2     68.3                  29.3 
+## 2 RI        5   1545.                    3.24
+## 3 CA      403 163695.                    2.46
+## 4 CT       12   5543.                    2.16
+## 5 FL      140  65758.                    2.13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# La Quinta per thousand square miles}
+\NormalTok{laquinta\_per\_area }\OtherTok{\textless{}{-}}\NormalTok{ laquinta }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(country }\SpecialCharTok{==} \StringTok{"United States"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(state) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{inner\_join}\NormalTok{(states, }\AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"state"} \OtherTok{=} \StringTok{"abbreviation"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{locations\_per\_1000sqmi =}\NormalTok{ n }\SpecialCharTok{/}\NormalTok{ (area }\SpecialCharTok{/} \DecValTok{1000}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(locations\_per\_1000sqmi))}
+
+\CommentTok{\# Top 5 states by La Quinta density}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Top 5 states by La Quinta per 1000 square miles:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Top 5 states by La Quinta per 1000 square miles:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(laquinta\_per\_area }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(state, n, area, locations\_per\_1000sqmi), }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 x 4
+##   state     n    area locations_per_1000sqmi
+##   <chr> <int>   <dbl>                  <dbl>
+## 1 RI        2   1545.                  1.29 
+## 2 FL       74  65758.                  1.13 
+## 3 CT        6   5543.                  1.08 
+## 4 MD       13  12406.                  1.05 
+## 5 TX      237 268596.                  0.882
+\end{verbatim}
+
+Rhode Island and DC have high densities due to their small areas.
+Adjusting for area gives us a different perspective on concentration.
+
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{10}
+\tightlist
 \item
   Filter the data for observations in North Carolina only, and recreate
   the plot. You should also adjust the transparency of the points, by
   setting the \texttt{alpha} level, so that it's easier to see the
   overplotted ones. Visually, does Mitch Hedberg's joke appear to hold
   here?
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dn\_lq }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(state }\SpecialCharTok{==} \StringTok{"NC"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ longitude, }\AttributeTok{y =}\NormalTok{ latitude, }\AttributeTok{color =}\NormalTok{ establishment)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{size =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Denny\textquotesingle{}s and La Quinta Locations in North Carolina"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Longitude"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Latitude"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"Establishment"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_quickmap}\NormalTok{()  }\CommentTok{\# Alternative that doesn\textquotesingle{}t require mapproj}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{lab-04-viz-sp-data_files/figure-latex/nc-plot-1.pdf}}
+
+Looking at the North Carolina plot, there does appear to be some
+clustering of Denny's and La Quinta locations, particularly around major
+cities and along interstate corridors. However, the pattern isn't
+overwhelming - there are many Denny's without nearby La Quintas and vice
+versa. The joke partially holds but isn't a universal truth.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{11}
+\tightlist
 \item
   Now filter the data for observations in Texas only, and recreate the
   plot, with an appropriate \texttt{alpha} level. Visually, does Mitch
   Hedberg's joke appear to hold here?
 \end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dn\_lq }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(state }\SpecialCharTok{==} \StringTok{"TX"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ longitude, }\AttributeTok{y =}\NormalTok{ latitude, }\AttributeTok{color =}\NormalTok{ establishment)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \FloatTok{1.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Denny\textquotesingle{}s and La Quinta Locations in Texas"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Longitude"}\NormalTok{, }
+    \AttributeTok{y =} \StringTok{"Latitude"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"Establishment"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_quickmap}\NormalTok{() }\SpecialCharTok{+}  \CommentTok{\# Alternative that doesn\textquotesingle{}t require mapproj}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"Denny\textquotesingle{}s"} \OtherTok{=} \StringTok{"\#FF6B6B"}\NormalTok{, }\StringTok{"La Quinta"} \OtherTok{=} \StringTok{"\#4ECDC4"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{lab-04-viz-sp-data_files/figure-latex/tx-plot-1.pdf}}
+
+In Texas, with many more locations of both establishments, we can see
+some clustering patterns, especially in major metropolitan areas like
+Houston, Dallas, Austin, and San Antonio. There does appear to be some
+tendency for the two chains to locate near each other, particularly
+along major highways. However, there are also many locations of each
+chain that are not near the other. The joke seems to have some basis in
+reality but is an exaggeration.
 
 That's it for now! In the next lab we will take a more quantitative
 approach to answering these questions.
