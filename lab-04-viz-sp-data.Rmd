@@ -134,6 +134,12 @@ Based on examining the websites:
     Don't worry about whether you know how to implement this, just brainstorm some ideas.
     Write down at least one as your answer, but you're welcomed to write down a few options too.
 
+Several ways to determine if there are non-US locations:
+1. Check if the `state` variable contains any non-US state abbreviations (anything not in the standard 50 states + DC)
+2. Look for zip codes that don't follow US formatting patterns
+3. Check if longitude/latitude coordinates fall outside US boundaries
+4. Look for any unusual patterns in the address fields that might indicate foreign addresses
+
 We will determine whether or not the establishment has a location outside the US using the `state` variable in the `dennys` and `laquinta` datasets.
 We know exactly which states are in the US, and we have this information in the `states` dataframe we loaded.
 
