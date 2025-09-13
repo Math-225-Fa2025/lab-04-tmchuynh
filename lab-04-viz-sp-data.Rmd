@@ -347,6 +347,23 @@ Rhode Island and DC have high densities due to their small areas. Adjusting for 
     You should also adjust the transparency of the points, by setting the `alpha` level, so that it's easier to see the overplotted ones.
     Visually, does Mitch Hedberg's joke appear to hold here?
 
+```{r nc-plot}
+dn_lq %>%
+  filter(state == "NC") %>%
+  ggplot(mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha = 0.7, size = 2) +
+  labs(
+    title = "Denny's and La Quinta Locations in North Carolina",
+    x = "Longitude",
+    y = "Latitude",
+    color = "Establishment"
+  ) +
+  theme_minimal() +
+  coord_map()  # This preserves the aspect ratio for geographic data
+```
+
+Looking at the North Carolina plot, there does appear to be some clustering of Denny's and La Quinta locations, particularly around major cities and along interstate corridors. However, the pattern isn't overwhelming - there are many Denny's without nearby La Quintas and vice versa. The joke partially holds but isn't a universal truth.
+
 12. Now filter the data for observations in Texas only, and recreate the plot, with an appropriate `alpha` level.
     Visually, does Mitch Hedberg's joke appear to hold here?
 
