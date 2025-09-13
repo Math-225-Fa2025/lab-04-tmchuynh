@@ -105,10 +105,17 @@ The Denny's dataset has `r nrow(dennys)` rows and `r ncol(dennys)` columns. Each
 # Let's examine the structure of the data
 glimpse(dennys)
 ```
+
 2.  What are the dimensions of the La Quinta's dataset?
     What does each row in the dataset represent?
     What are the variables?
 
+The La Quinta dataset has `r nrow(laquinta)` rows and `r ncol(laquinta)` columns. Each row represents a single La Quinta hotel location. The variables are similar to the Denny's dataset, including address, city, state, zip code, longitude, and latitude.
+
+```{r laquinta-glimpse}
+# Examine the structure of La Quinta data
+glimpse(laquinta)
+```
 🧶 ✅ ⬆️ Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
 
 We would like to limit our analysis to Denny's and La Quinta locations in the United States.
