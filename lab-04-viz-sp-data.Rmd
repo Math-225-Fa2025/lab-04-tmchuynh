@@ -116,6 +116,7 @@ The La Quinta dataset has `r nrow(laquinta)` rows and `r ncol(laquinta)` columns
 # Examine the structure of La Quinta data
 glimpse(laquinta)
 ```
+
 🧶 ✅ ⬆️ Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
 
 We would like to limit our analysis to Denny's and La Quinta locations in the United States.
