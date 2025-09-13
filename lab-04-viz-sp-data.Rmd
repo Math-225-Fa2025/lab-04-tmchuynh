@@ -334,7 +334,7 @@ head(dennys_per_area %>% select(state, n, area, locations_per_1000sqmi), 5)
 laquinta_per_area <- laquinta %>%
   filter(country == "United States") %>%
   count(state) %>%
-  inner_join(states, by = c "state" = "abbreviation") %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
   mutate(locations_per_1000sqmi = n / (area / 1000)) %>%
   arrange(desc(locations_per_1000sqmi))
 
