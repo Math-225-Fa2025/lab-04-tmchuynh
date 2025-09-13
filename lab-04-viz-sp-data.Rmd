@@ -99,6 +99,12 @@ Along with the name of the state we have the two-letter abbreviation and we have
     (Hint: Use inline R code and functions like `nrow` and `ncol` to compose your answer.) What does each row in the dataset represent?
     What are the variables?
 
+The Denny's dataset has `r nrow(dennys)` rows and `r ncol(dennys)` columns. Each row represents a single Denny's restaurant location. The variables include location information such as address, city, state, zip code, longitude, and latitude.
+
+```{r dennys-glimpse}
+# Let's examine the structure of the data
+glimpse(dennys)
+```
 2.  What are the dimensions of the La Quinta's dataset?
     What does each row in the dataset represent?
     What are the variables?
