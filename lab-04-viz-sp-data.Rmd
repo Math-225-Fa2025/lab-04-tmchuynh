@@ -259,6 +259,21 @@ cat("\nStates with fewest Denny's:\n")
 tail(dennys_by_state, 5)
 ```
 
+```{r laquinta-by-state}
+# La Quinta locations by state (US only)
+laquinta_by_state <- laquinta %>%
+  filter(country == "United States") %>%
+  count(state, sort = TRUE)
+
+# Top 5 states with most La Quinta
+cat("Top 5 states with most La Quinta:\n")
+head(laquinta_by_state, 5)
+
+# Bottom 5 states with fewest La Quinta
+cat("\nStates with fewest La Quinta:\n")
+tail(laquinta_by_state, 5)
+```
+
 10. Which states have the most Denny's locations per thousand square miles? What about La Quinta?
 
 Next, we put the two datasets together into a single data frame.
