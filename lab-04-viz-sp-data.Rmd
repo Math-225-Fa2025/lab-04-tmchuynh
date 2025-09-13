@@ -166,19 +166,43 @@ glimpse(dennys)
     This might require some googling.
     Take notes, you will need to use this information in the next exercise.
 
+```{r laquinta-non-us}
+laquinta %>%
+  filter(!(state %in% states$abbreviation))
+```
+
+Based on the output and some research:
+- ON = Ontario, Canada
+- BC = British Columbia, Canada  
+- ANT = Antioquia, Colombia
+- FM = Mexico (possibly Estado de México)
+- NL = Nuevo León, Mexico
+- PU = Puebla, Mexico
+- SL = San Luis Potosí, Mexico
+- VE = Veracruz, Mexico
+- AG = Aguascalientes, Mexico
+- QR = Quintana Roo, Mexico
+- CH = Chihuahua, Mexico
+
 8.  Add a country variable to the La Quinta dataset.
     Use the `case_when` function to populate this variable.
     You'll need to refer to your notes from Exercise 7 about which country the non-US locations are in.
     Here is some starter code to get you going:
 
-```{r eval = FALSE}
-laquinta %>%
+
+```{r laquinta-add-country}
+laquinta <- laquinta %>%
   mutate(country = case_when(
     state %in% state.abb     ~ "United States",
     state %in% c("ON", "BC") ~ "Canada",
     state == "ANT"           ~ "Colombia",
-    ...                      # fill in the rest
+    state %in% c("FM", "NL", "PU", "SL", "VE", "AG", "QR", "CH") ~ "Mexico",
+    TRUE                     ~ "Unknown"  # catch any we might have missed
   ))
+
+# Check the country distribution
+laquinta %>%
+  count(country)
 ```
 
 🧶 ✅ ⬆️ Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
