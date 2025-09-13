@@ -320,7 +320,7 @@ You can also choose different themes to change the overall look of your plots, s
 # Denny's per thousand square miles
 dennys_per_area <- dennys %>%
   count(state) %>%
-  inner_join(states, by = c "state" = "abbreviation") %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
   mutate(locations_per_1000sqmi = n / (area / 1000)) %>%
   arrange(desc(locations_per_1000sqmi))
 
