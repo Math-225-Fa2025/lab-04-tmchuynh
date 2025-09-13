@@ -125,6 +125,10 @@ We would like to limit our analysis to Denny's and La Quinta locations in the Un
     If so, which countries?
     What about Denny's?
 
+Based on examining the websites:
+- La Quinta has locations outside the US, including in Canada, Mexico, Colombia, and other countries.
+- Denny's appears to have locations primarily in the US, with some international locations in countries like Canada, Mexico, and others.
+
 4.  Now take a look at the data.
     What would be some ways of determining whether or not either establishment has any locations outside the US using just the data (and not the websites).
     Don't worry about whether you know how to implement this, just brainstorm some ideas.
